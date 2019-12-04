@@ -4,6 +4,12 @@ PHP [RFC 7636 - Proof Key for Code Exchange by OAuth Public Clients][rfc7636] (P
 
 [rfc7636]: https://tools.ietf.org/html/rfc7636
 
+## Why this package?
+
+Already known OAuth2 server implementations (eg [league/oauth2-server]) implement PKCE, but not servers based on the latest implementation. This library provides functionality for adding PKCE verification to an independent OAuth server.
+
+[league/oauth2-server]: https://oauth2.thephpleague.com/
+
 ## Usage
 
 ### 1. Get `code_verifier` and `code_method` in **step (A)**
