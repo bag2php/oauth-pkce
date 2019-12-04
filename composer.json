@@ -1,0 +1,10 @@
+{
+    "name": "bag2/oauth-pkce",
+    "liecnse": "Apache-2.0",
+    "require": {
+        "php": "^7.1"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
