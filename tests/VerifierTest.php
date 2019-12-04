@@ -20,7 +20,10 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
      */
     public function test(string $method, $code_verifier, $code_challenge)
     {
-        $subject = Verifier::fromString($code_verifier, $method);
+        $subject = Verifier::create([
+            'code_verifier' => $code_verifier,
+            'code_challenge_method' => $method,
+        ]);
 
         $this->assertTrue($subject->verify($code_challenge));
     }
@@ -73,14 +76,14 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
     /**
      * @dataProvider provider_raiseException
      */
-    public function test_raiseException(string $method)
+    public function test_raiseException(string $code_challenge_method)
     {
         $code_verifier = 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM';
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$method must be "S256" or "plain"');
 
-        $_ = Verifier::fromString($code_verifier, $method);
+        $_ = Verifier::create(\compact('code_verifier', 'code_challenge_method'));
     }
 
     public function provider_raiseException()

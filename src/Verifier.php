@@ -35,18 +35,24 @@ final class Verifier
     }
 
     /**
-     * @phan-param 'S256'|'plain' $method
-     * @psalm-param 'S256'|'plain' $method
+     * @param array{code_verifier:string,code_challenge_method:string} $code_verifier_and_method
+     * @phan-param array{code_verifier:string,code_challenge_method:'S256'|'plain'} $code_verifier_and_method
+     * @psalm-param array{code_verifier:string,code_challenge_method:'S256'|'plain'} $code_verifier_and_method
      */
-    public static function fromString(string $code_verifier, string $method): self
+    public static function create(array $code_verifier_and_method): self
     {
+        [
+            'code_verifier' => $verifier,
+            'code_challenge_method' => $method
+        ] = $code_verifier_and_method;
+
         $class = self::IMPLEMENTED_METHOD[$method] ?? false;
 
         if ($class === false) {
             throw new InvalidArgumentException('$method must be "S256" or "plain"');
         }
 
-        return new self($code_verifier, new $class());
+        return new self($verifier, new $class());
     }
 
     public static function isValidCodeChallengeMethod(string $method): bool
