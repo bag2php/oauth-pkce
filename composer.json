@@ -1,6 +1,7 @@
 {
     "name": "bag2/oauth-pkce",
     "liecnse": "Apache-2.0",
+    "keywords": ["oauth", "rfc7636"],
     "require": {
         "php": "^7.1",
         "ircmaxell/random-lib": "^1.2"
