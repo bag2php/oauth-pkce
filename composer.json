@@ -5,6 +5,11 @@
         "php": "^7.1",
         "ircmaxell/random-lib": "^1.2"
     },
+    "autoload": {
+        "psr-4": {
+            "Bag2\\OAuth\\PKCE\\": "src/"
+        }
+    },
     "config": {
         "sort-packages": true
     }
