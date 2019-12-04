@@ -42,6 +42,27 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
     }
 
     /**
+     * @dataProvider methodProvider
+     */
+    public function test_isValidCodeChallengeMethod(bool $expected, string $method)
+    {
+        $this->assertSame($expected, Verifier::isValidCodeChallengeMethod($method));
+    }
+
+    public function methodProvider()
+    {
+        return [
+            [true, 'plain'],
+            [true, 'S256'],
+            [false, ''],
+            [false, '<?php'],
+            [false, 's256'],
+            [false, 's256 '],
+            [false, "S256\n"],
+        ];
+    }
+
+    /**
      * @dataProvider provider_raiseException
      */
     public function test_raiseException(string $method)

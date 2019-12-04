@@ -49,6 +49,11 @@ final class Verifier
         return new self($code_verifier, new $class());
     }
 
+    public static function isValidCodeChallengeMethod(string $method): bool
+    {
+        return isset(self::IMPLEMENTED_METHOD[$method]);
+    }
+
     public function verify(string $code_challenge): bool
     {
         return $this->method->verify($this->verifier, $code_challenge);
