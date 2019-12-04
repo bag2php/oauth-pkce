@@ -54,6 +54,11 @@ final class Verifier
         return isset(self::IMPLEMENTED_METHOD[$method]);
     }
 
+    public static function isValidCodeVerifier(string $code_verifier): bool
+    {
+        return \preg_match('/\A[A-Za-z0-9._~-]{43,128}\z/', $code_verifier) === 1;
+    }
+
     public function verify(string $code_challenge): bool
     {
         return $this->method->verify($this->verifier, $code_challenge);

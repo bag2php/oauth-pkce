@@ -25,6 +25,14 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
         $this->assertTrue($subject->verify($code_challenge));
     }
 
+    /**
+     * @dataProvider provider
+     */
+    public function test_isValidCodeVerifier(string $method, $code_verifier)
+    {
+        $this->assertTrue(Verifier::isValidCodeVerifier($code_verifier));
+    }
+
     public function provider()
     {
         return [
