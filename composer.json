@@ -5,9 +5,17 @@
         "php": "^7.1",
         "ircmaxell/random-lib": "^1.2"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
     "autoload": {
         "psr-4": {
             "Bag2\\OAuth\\PKCE\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bag2\\OAuth\\PKCE\\": "tests/"
         }
     },
     "config": {
