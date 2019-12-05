@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Bag2\OAuth\PKCE;
 
 use InvalidArgumentException;
+use RandomLib\Factory as RandomFactory;
+use RuntimeException;
 
 /**
  * Test case for TokenGenerator
@@ -64,5 +66,30 @@ class TokenGeneratorTest extends \Bag2\OAuth\PKCE\TestCase
             [999],
             [PHP_INT_MAX],
         ];
+    }
+
+    public function test_customRandomFactory()
+    {
+        $message = 'jfladkfjlaksfjafdasfa';
+        $random_factory = new class($message) extends RandomFactory {
+             private $message;
+
+             public function __construct(string $message)
+             {
+                 parent::__construct();
+
+                 $this->message = $message;
+             }
+
+             public function getMediumStrengthGenerator()
+             {
+                 throw new RuntimeException($this->message);
+             }
+        };
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage($message);
+
+        $_ = new TokenGenerator($random_factory);
     }
 }
