@@ -65,7 +65,7 @@ if (isset($saved['code_verifier'])) {
         throw new Exception('code_challenge required');
     }
 
-    $verifier = PKCEVerifier::create($saved);
+    $verifier = PKCEVerifier::fromArray($saved);
     if (!$verifier->verify($code_challenge)) {
         throw new Exception('code_challenge required');
     }

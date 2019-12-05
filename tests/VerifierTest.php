@@ -20,7 +20,7 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
      */
     public function test(string $method, $code_verifier, $code_challenge)
     {
-        $subject = Verifier::create([
+        $subject = Verifier::fromArray([
             'code_verifier' => $code_verifier,
             'code_challenge_method' => $method,
         ]);
@@ -83,7 +83,7 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$method must be "S256" or "plain"');
 
-        $_ = Verifier::create(\compact('code_verifier', 'code_challenge_method'));
+        $_ = Verifier::fromArray(\compact('code_verifier', 'code_challenge_method'));
     }
 
     public function provider_raiseException()

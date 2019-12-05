@@ -39,7 +39,7 @@ final class Verifier
      * @phan-param array{code_verifier:string,code_challenge_method:'S256'|'plain'} $code_verifier_and_method
      * @psalm-param array{code_verifier:string,code_challenge_method:'S256'|'plain'} $code_verifier_and_method
      */
-    public static function create(array $code_verifier_and_method): self
+    public static function fromArray(array $code_verifier_and_method): self
     {
         [
             'code_verifier' => $verifier,
