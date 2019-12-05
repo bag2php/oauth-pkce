@@ -43,16 +43,29 @@ final class Challenge
     {
         [
             'code_challenge' => $challenge,
-            'code_challenge_method' => $method
+            'code_challenge_method' => $method_name
         ] = $code_challenge_and_method;
 
-        $class = self::IMPLEMENTED_METHOD[$method] ?? false;
+        return new self($challenge, self::getMethodByName($method_name));
+    }
+
+    public static function fromVerifier(string $verifier, string $method_name): self
+    {
+        $method = self::getMethodByName($method_name);
+        $challenge = $method->encode($verifier);
+
+        return new self($challenge, $method);
+    }
+
+    public static function getMethodByName($method_name): PKCEMethod
+    {
+        $class = self::IMPLEMENTED_METHOD[$method_name] ?? false;
 
         if ($class === false) {
             throw new InvalidArgumentException('$method must be "S256" or "plain"');
         }
 
-        return new self($challenge, new $class());
+        return new $class;
     }
 
     public static function isValidCodeChallengeMethod(string $method): bool
