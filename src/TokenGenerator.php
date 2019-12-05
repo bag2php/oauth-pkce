@@ -24,14 +24,18 @@ class TokenGenerator
     /** @var RandomGenerator */
     private $generator;
 
-    public function __construct(RandomGenerator $random_generator = null)
+    public function __construct(RandomFactory $random_factory = null)
     {
-        $this->generator = $random_generator ?? $this->getRandomGenerator();
+        if ($random_factory === null) {
+            $random_factory = $this->getRandomGeneratorFactory();
+        }
+
+        $this->generator = $random_factory->getMediumStrengthGenerator();
     }
 
-    private function getRandomGenerator(): RandomGenerator
+    private function getRandomGeneratorFactory(): RandomFactory
     {
-        return (new RandomFactory)->getMediumStrengthGenerator();
+        return new RandomFactory();
     }
 
     public function generate(int $byte_length): string
