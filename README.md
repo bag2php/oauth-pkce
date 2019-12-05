@@ -16,7 +16,7 @@ See **Figure 3: Authorization Code Flow** in [OAuth 2.0: 4.1.  Authorization Cod
 
 ### For Authorization Server
 
-#### 1. Store `code_verifier` and `code_method` in **step (A) and (B)**
+#### 1. Store `code_challenge` in **step (A) and (B)**
 
 In this flow, write as follows:
 
@@ -27,12 +27,12 @@ In this flow, write as follows:
 use Bag2\OAuth\PKCE\Verifier as PKCEVerifier;
 
 // Request by Web Browser
-$code_verifier = \filter_input(INPUT_GET, 'code_verifier');
+$code_challenge = \filter_input(INPUT_POST, 'code_challenge');
 $code_challenge_method = \filter_input(INPUT_GET, 'code_challenge_method') ?: 'plain';
 
 if ($code_verifier !== null) {
-    if (!Verifier::isValidCodeVerifier($code_verifier)) {
-        throw new Exception('invalid code_verifier');
+    if (!Verifier::isValidCodeVerifier($code_challenge)) {
+        throw new Exception('invalid code_challenge');
     }
     if (!Verifier::isValidCodeChallengeMethod($code_challenge_method)) {
         throw new Exception('invalid code_challenge_method');
@@ -41,14 +41,14 @@ if ($code_verifier !== null) {
 
 store_value([
     'code' => getnerate_oauth_code(),
-    'code_verifier' => $code_verifier,
+    'code_challenge' => $code_challenge,
     'code_challenge_method' => $code_challenge_method,
 ]);
 
 // Redirect
 ```
 
-#### 2. Verify `code_challenge` in **step (D)**
+#### 2. Verify `code_verifier` in **step (D)**
 
 ```php
 // This (pseudo) code is written in vanilla PHP.
@@ -58,17 +58,16 @@ use Bag2\OAuth\PKCE\Verifier as PKCEVerifier;
 
 // Request by Client
 $code = \filter_input(INPUT_POST, 'code');
+$code_verifier = \filter_input(INPUT_POST, 'code_verifier');
 $saved = get_stored_value($code);
 
-$code_challenge = \filter_input(INPUT_POST, 'code_challenge');
-
-if (isset($saved['code_verifier'])) {
-    if ($code_challenge === null) {
-        throw new Exception('code_challenge required');
+if (isset($saved['code_challenge'])) {
+    if ($code_verifier === null) {
+        throw new Exception('$code_verifier required');
     }
 
     $verifier = PKCEVerifier::fromArray($saved);
-    if (!$verifier->verify($code_challenge)) {
+    if (!$verifier->verify($code_verifier)) {
         throw new Exception('code_challenge required');
     }
 }

@@ -24,27 +24,27 @@ final class Verifier
     ];
 
     /** @var string */
-    private $verifier;
+    private $challenge;
     /** @var PKCEMethod */
     private $method;
 
-    public function __construct(string $code_verifier, PKCEMethod $method)
+    public function __construct(string $code_challenge, PKCEMethod $method)
     {
-        $this->verifier = $code_verifier;
+        $this->challenge = $code_challenge;
         $this->method = $method;
     }
 
     /**
-     * @param array{code_verifier:string,code_challenge_method:string} $code_verifier_and_method
-     * @phan-param array{code_verifier:string,code_challenge_method:'S256'|'plain'} $code_verifier_and_method
-     * @psalm-param array{code_verifier:string,code_challenge_method:'S256'|'plain'} $code_verifier_and_method
+     * @param array{code_challenge:string,code_challenge_method:string} $code_challenge_and_method
+     * @phan-param array{code_challenge:string,code_challenge_method:'S256'|'plain'} $code_challenge_and_method
+     * @psalm-param array{code_challenge:string,code_challenge_method:'S256'|'plain'} $code_challenge_and_method
      */
-    public static function fromArray(array $code_verifier_and_method): self
+    public static function fromArray(array $code_challenge_and_method): self
     {
         [
-            'code_verifier' => $verifier,
+            'code_challenge' => $challenge,
             'code_challenge_method' => $method
-        ] = $code_verifier_and_method;
+        ] = $code_challenge_and_method;
 
         $class = self::IMPLEMENTED_METHOD[$method] ?? false;
 
@@ -52,7 +52,7 @@ final class Verifier
             throw new InvalidArgumentException('$method must be "S256" or "plain"');
         }
 
-        return new self($verifier, new $class());
+        return new self($challenge, new $class());
     }
 
     public static function isValidCodeChallengeMethod(string $method): bool
@@ -65,8 +65,21 @@ final class Verifier
         return \preg_match('/\A[A-Za-z0-9._~-]{43,128}\z/', $code_verifier) === 1;
     }
 
-    public function verify(string $code_challenge): bool
+    /**
+     * @return array{code_challenge:string,code_challenge_method:string}
+     * @phan-return array{code_challenge:string,code_challenge_method:'S256'|'plain'}
+     * @psalm-return array{code_challenge:string,code_challenge_method:'S256'|'plain'}
+     */
+    public function toArray(): array
     {
-        return $this->method->verify($this->verifier, $code_challenge);
+        return [
+            'code_challenge' => $this->challenge,
+            'code_challenge_method' => $this->method->name(),
+        ];
+    }
+
+    public function verify(string $code_verifier): bool
+    {
+        return $this->method->verify($code_verifier, $this->challenge);
     }
 }

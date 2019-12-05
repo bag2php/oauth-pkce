@@ -18,14 +18,16 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
     /**
      * @dataProvider provider
      */
-    public function test(string $method, $code_verifier, $code_challenge)
+    public function test(string $method, $code_challenge, $code_verifier)
     {
-        $subject = Verifier::fromArray([
-            'code_verifier' => $code_verifier,
+        $array = [
+            'code_challenge' => $code_challenge,
             'code_challenge_method' => $method,
-        ]);
+        ];
+        $subject = Verifier::fromArray($array);
 
-        $this->assertTrue($subject->verify($code_challenge));
+        $this->assertTrue($subject->verify($code_verifier));
+        $this->assertSame($array, $subject->toArray());
     }
 
     /**
@@ -40,14 +42,14 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
     {
         return [
             [
-                'plain',
-                'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk',
-                'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk',
+                'method' => 'plain',
+                'code_challenge' => 'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk',
+                'code_verifier' => 'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk',
             ],
             [
-                'S256',
-                'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk',
-                'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM',
+                'method' => 'S256',
+                'code_challenge' => 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM',
+                'code_verifier' => 'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk',
             ],
         ];
     }
@@ -78,12 +80,12 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
      */
     public function test_raiseException(string $code_challenge_method)
     {
-        $code_verifier = 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM';
+        $code_challenge = 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM';
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$method must be "S256" or "plain"');
 
-        $_ = Verifier::fromArray(\compact('code_verifier', 'code_challenge_method'));
+        $_ = Verifier::fromArray(\compact('code_challenge', 'code_challenge_method'));
     }
 
     public function provider_raiseException()
