@@ -20,6 +20,8 @@ abstract class AbstractMethod
 
     abstract public function encode(string $string): string;
 
+    abstract public function name(): string;
+
     public function verify(string $code_verifier, string $code_challenge): bool
     {
         return \hash_equals($this->encode($code_verifier), $code_challenge);

@@ -18,6 +18,11 @@ final class Plain extends AbstractMethod
         return $string;
     }
 
+    public function name(): string
+    {
+        return 'plain';
+    }
+
     public function verify(string $code_verifier, string $code_challenge): bool
     {
         return \hash_equals($code_verifier, $code_challenge);
