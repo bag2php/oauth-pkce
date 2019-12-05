@@ -10,13 +10,13 @@ use Bag2\OAuth\PKCE\Method\Plain;
 use InvalidArgumentException;
 
 /**
- * PKCE Verifier
+ * PKCE Challenge
  *
  * @copyright 2019 Baguette HQ
  * @license Apache-2.0
  * @author USAMI Kenta <tadsan@zonu.me>
  */
-final class Verifier
+final class Challenge
 {
     private const IMPLEMENTED_METHOD = [
         'S256' => S256::class,

@@ -24,7 +24,7 @@ In this flow, write as follows:
 // This (pseudo) code is written in vanilla PHP.
 // Actually follow your framework / project conventions.
 
-use Bag2\OAuth\PKCE\Verifier as PKCEVerifier;
+use Bag2\OAuth\PKCE\Challenge;
 
 // Request by Web Browser
 $code_challenge = \filter_input(INPUT_POST, 'code_challenge');
@@ -54,7 +54,7 @@ store_value([
 // This (pseudo) code is written in vanilla PHP.
 // Actually follow your framework / project conventions.
 
-use Bag2\OAuth\PKCE\Verifier as PKCEVerifier;
+use Bag2\OAuth\PKCE\Challenge;
 
 // Request by Client
 $code = \filter_input(INPUT_POST, 'code');
@@ -66,7 +66,7 @@ if (isset($saved['code_challenge'])) {
         throw new Exception('$code_verifier required');
     }
 
-    $verifier = PKCEVerifier::fromArray($saved);
+    $verifier = Challenge::fromArray($saved);
     if (!$verifier->verify($code_verifier)) {
         throw new Exception('code_challenge required');
     }

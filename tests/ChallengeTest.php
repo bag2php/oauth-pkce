@@ -7,13 +7,13 @@ namespace Bag2\OAuth\PKCE;
 use InvalidArgumentException;
 
 /**
- * Test case for PKCE Verifier
+ * Test case for PKCE Challenge
  *
  * @copyright 2019 Baguette HQ
  * @license Apache-2.0
  * @author USAMI Kenta <tadsan@zonu.me>
  */
-class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
+class ChallengeTest extends \Bag2\OAuth\PKCE\TestCase
 {
     /**
      * @dataProvider provider
@@ -24,7 +24,7 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
             'code_challenge' => $code_challenge,
             'code_challenge_method' => $method,
         ];
-        $subject = Verifier::fromArray($array);
+        $subject = Challenge::fromArray($array);
 
         $this->assertTrue($subject->verify($code_verifier));
         $this->assertSame($array, $subject->toArray());
@@ -35,7 +35,7 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
      */
     public function test_isValidCodeVerifier(string $method, $code_verifier)
     {
-        $this->assertTrue(Verifier::isValidCodeVerifier($code_verifier));
+        $this->assertTrue(Challenge::isValidCodeVerifier($code_verifier));
     }
 
     public function provider()
@@ -59,7 +59,7 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
      */
     public function test_isValidCodeChallengeMethod(bool $expected, string $method)
     {
-        $this->assertSame($expected, Verifier::isValidCodeChallengeMethod($method));
+        $this->assertSame($expected, Challenge::isValidCodeChallengeMethod($method));
     }
 
     public function methodProvider()
@@ -85,7 +85,7 @@ class VerifierTest extends \Bag2\OAuth\PKCE\TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$method must be "S256" or "plain"');
 
-        $_ = Verifier::fromArray(\compact('code_challenge', 'code_challenge_method'));
+        $_ = Challenge::fromArray(\compact('code_challenge', 'code_challenge_method'));
     }
 
     public function provider_raiseException()
