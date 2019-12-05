@@ -12,9 +12,11 @@ Already known OAuth2 server implementations (eg [league/oauth2-server]) implemen
 
 ## Usage
 
-### 1. Get `code_verifier` and `code_method` in **step (A)**
-
 See **Figure 3: Authorization Code Flow** in [OAuth 2.0: 4.1.  Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1).
+
+### For Authorization Server
+
+#### 1. Store `code_verifier` and `code_method` in **step (A) and (B)**
 
 In this flow, write as follows:
 
@@ -46,7 +48,7 @@ store_value([
 // Redirect
 ```
 
-### 2. Verify `code_challenge` in **step (D)**
+#### 2. Verify `code_challenge` in **step (D)**
 
 ```php
 // This (pseudo) code is written in vanilla PHP.
