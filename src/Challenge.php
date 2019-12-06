@@ -57,7 +57,7 @@ final class Challenge
         return new self($challenge, $method);
     }
 
-    public static function getMethodByName($method_name): PKCEMethod
+    public static function getMethodByName(string $method_name): PKCEMethod
     {
         $class = self::IMPLEMENTED_METHOD[$method_name] ?? false;
 
