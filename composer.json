@@ -1,5 +1,6 @@
 {
     "name": "bag2/oauth-pkce",
+    "description": "OAuth PKCE implementaion independent of OAuth servers.",
     "license": "Apache-2.0",
     "keywords": ["oauth", "rfc7636"],
     "require": {
