@@ -31,6 +31,22 @@ class ChallengeTest extends \Bag2\OAuth\PKCE\TestCase
     }
 
     /**
+     * @dataProvider methodNameProvider
+     */
+    public function test_getMethodByName(string $expected, string $method_name)
+    {
+        $this->assertInstanceOf($expected, Challenge::getMethodByName($method_name));
+    }
+
+    public function methodNameProvider()
+    {
+        return [
+            'S256' => [Method\S256::class, 'S256'],
+            'plain' => [Method\Plain::class, 'plain'],
+        ];
+    }
+
+    /**
      * @dataProvider provider
      */
     public function test_isValidCodeVerifier(string $method, $code_verifier)

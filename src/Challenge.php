@@ -57,6 +57,10 @@ final class Challenge
         return new self($challenge, $method);
     }
 
+    /**
+     * @phan-param 'S256'|'plain' $method_name
+     * @psalm-param 'S256'|'plain' $method_name
+     */
     public static function getMethodByName(string $method_name): PKCEMethod
     {
         $class = self::IMPLEMENTED_METHOD[$method_name] ?? false;
