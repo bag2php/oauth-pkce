@@ -1,6 +1,6 @@
 # Bag2\OAuth\PKCE
 
-PHP [RFC 7636 - Proof Key for Code Exchange by OAuth Public Clients][rfc7636] (PKCE) implementaion independent of OAuth servers.
+PHP [RFC 7636 - Proof Key for Code Exchange by OAuth Public Clients][rfc7636] (PKCE) implementation independent of OAuth servers.
 
 [rfc7636]: https://tools.ietf.org/html/rfc7636
 
