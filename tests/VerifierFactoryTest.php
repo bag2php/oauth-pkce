@@ -33,7 +33,7 @@ class VerifierFactoryTest extends \Bag2\OAuth\PKCE\TestCase
         $byte_length = 128;
         $actual = $this->subject->generate($byte_length, $method_name);
 
-        $this->assertInternalType('string', $actual[0]);
+        $this->assertIsString($actual[0]);
         $this->assertSame($byte_length, \strlen($actual[0]));
         $this->assertInstanceOf(Challenge::class, $actual[1]);
     }
